@@ -61,7 +61,7 @@ export default function MenuSection({
       {section.layout === 'cards' ? (
         <div
           ref={rowRef}
-          className="hide-scrollbar row-fade-right mx-auto mt-8 flex w-full max-w-6xl snap-x snap-mandatory gap-4 overflow-x-auto overscroll-x-contain px-4 pb-4 pt-2 scroll-pl-4 sm:gap-5 sm:px-6 sm:scroll-pl-6"
+          className="hide-scrollbar row-fade-right mx-auto mt-8 flex w-full max-w-6xl snap-x snap-mandatory gap-4 overflow-x-auto overscroll-x-contain py-2 pl-4 pr-0 pb-4 scroll-pl-4 sm:gap-5 sm:pl-6 sm:scroll-pl-6"
         >
           {section.items.map((item) => (
             <MenuCard key={item.name} item={item} />

@@ -8,6 +8,10 @@ export default function MenuCard({ item }: { item: MenuItem }) {
   const [isImageOpen, setIsImageOpen] = useState(false)
   const lastTouchRef = useRef(0)
   const historyKey = `menuImageViewer${useId().replaceAll(':', '')}`
+  const cardImage = item.image?.replace(
+    /^\/images\/([^/]+)\.png$/i,
+    '/images/optimized/$1.jpg',
+  )
 
   useEffect(() => {
     if (!isImageOpen) return
@@ -80,7 +84,7 @@ export default function MenuCard({ item }: { item: MenuItem }) {
   }
 
   return (
-    <article className="group flex w-[min(300px,calc(100vw-2rem))] shrink-0 snap-start flex-col overflow-hidden rounded-3xl bg-white shadow-[0_3px_14px_rgba(50,25,14,0.08)] transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_8px_22px_rgba(50,25,14,0.12)] sm:w-[300px]">
+    <article className="group flex w-full shrink-0 snap-start flex-col overflow-hidden rounded-3xl bg-white shadow-[0_3px_14px_rgba(50,25,14,0.08)] transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_8px_22px_rgba(50,25,14,0.12)] xl:w-[300px]">
       <div className="relative aspect-[4/3] w-full shrink-0 overflow-hidden">
         <button
           type="button"
@@ -93,9 +97,10 @@ export default function MenuCard({ item }: { item: MenuItem }) {
           className="block h-full w-full"
         >
           <img
-            src={item.image}
+            src={cardImage}
             alt={t(item.name)}
             loading="lazy"
+            decoding="async"
             className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
           />
         </button>
