@@ -1,0 +1,130 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-page: #f5f0e8;
+    --color-image: #f6bf89;
+    --color-heading: #32190e;
+    --color-body: #71594a;
+    --color-accent: #c91f26;
+    --color-card: #ffffff;
+    --color-border: #e5ddd2;
+
+    --background: 39 33% 94%;
+    --foreground: 17 57% 13%;
+    --card: 0 0% 100%;
+    --card-foreground: 17 57% 13%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 17 57% 13%;
+    --primary: 358 73% 45%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 39 33% 94%;
+    --secondary-foreground: 17 57% 13%;
+    --muted: 39 33% 94%;
+    --muted-foreground: 24 22% 37%;
+    --accent: 39 33% 94%;
+    --accent-foreground: 17 57% 13%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 34 24% 87%;
+    --input: 34 24% 87%;
+    --ring: 358 73% 45%;
+    --radius: 1rem;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--color-page);
+    color: var(--color-heading);
+    font-family: 'Inter', -apple-system, 'Segoe UI', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  .font-display {
+    font-family: 'Playfair Display', Georgia, serif;
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--color-accent);
+    outline-offset: 3px;
+  }
+}
+
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Edge fade masks on horizontal scroll rows */
+.row-fade {
+  -webkit-mask-image: linear-gradient(to right, transparent, black 4%, black 96%, transparent);
+  mask-image: linear-gradient(to right, transparent, black 4%, black 96%, transparent);
+}
+
+.row-fade-right {
+  -webkit-mask-image: linear-gradient(to right, black 0%, black 96%, transparent);
+  mask-image: linear-gradient(to right, black 0%, black 96%, transparent);
+}
+
+/* Scroll reveal */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* Gentle steam drift for the logo */
+@keyframes steam {
+  0% {
+    opacity: 0;
+    transform: translateY(2px);
+  }
+  40% {
+    opacity: 0.9;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+.steam path {
+  animation: steam 2.6s ease-in-out infinite;
+}
+.steam path:nth-child(2) {
+  animation-delay: 0.9s;
+}
