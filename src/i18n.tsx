@@ -4,7 +4,7 @@ import { LanguageContext, type Language, type LanguageContextValue } from './lan
 const AMHARIC: Record<string, string> = {
   Menu: 'ማውጫ',
   'Good food, warm coffee, and a seat that feels like home.':
-    'ጣፋጭ ምግብ ፣ ትኩስ ቡና እንደ ቤት የሚስማማ መቀመጫ።',
+    'ጣፋጭ ምግብ ፣ ትኩስ ቡና እንደ ቤትዎ የሚስማማ መቀመጫ።',
   "Browse at your own pace — when you're ready, just call your waiter and tell them what you'd love to have.":
     'ማውጫን በተረጋጋ ሁኔታ ይመልከቱ ፤ ሲዘጋጁ አስተናጋጁን ጠርተው የሚፈልጉትን ይዘዙ።',
   'Pizza Corner': 'ፒዛ',
