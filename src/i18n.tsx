@@ -138,8 +138,9 @@ const AMHARIC: Record<string, string> = {
   TikTok: 'ቲክቶክ',
   'Open image': 'ምስሉን ይክፈቱ',
   'Close image': 'ምስሉን ዝጋ',
+  'View item details': 'የእቃውን ዝርዝር ይመልከቱ',
+  'Close details': 'ዝርዝሩን ዝጋ',
   image: 'ምስል',
-  'Double-tap or press Enter to view': 'ለማየት ሁለት ጊዜ ይንኩ ወይም Enter ይጫኑ',
   'Scroll left': 'ወደ ግራ ያንሸራትቱ',
   'Scroll right': 'ወደ ቀኝ ያንሸራትቱ',
   'Chicken, minced beef, mozzarella, tomato sauce, boiled egg, and olives.':

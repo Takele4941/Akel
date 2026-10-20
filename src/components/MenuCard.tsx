@@ -1,4 +1,4 @@
-import { useEffect, useId, useRef, useState } from 'react'
+import { useEffect, useId, useState } from 'react'
 import { createPortal } from 'react-dom'
 import type { MenuItem } from '../data/menu'
 import { useLanguage } from '../useLanguage'
@@ -6,7 +6,6 @@ import { useLanguage } from '../useLanguage'
 export default function MenuCard({ item }: { item: MenuItem }) {
   const { t } = useLanguage()
   const [isImageOpen, setIsImageOpen] = useState(false)
-  const lastTouchRef = useRef(0)
   const historyKey = `menuImageViewer${useId().replaceAll(':', '')}`
   const cardImage = item.image?.replace(
     /^\/images\/([^/]+)\.png$/i,
@@ -73,29 +72,15 @@ export default function MenuCard({ item }: { item: MenuItem }) {
     }
   }
 
-  const handleTouchEnd = () => {
-    const now = Date.now()
-    if (now - lastTouchRef.current < 350) {
-      setIsImageOpen(true)
-      lastTouchRef.current = 0
-      return
-    }
-    lastTouchRef.current = now
-  }
-
   return (
-    <article className="group flex w-full shrink-0 snap-start flex-col overflow-hidden rounded-3xl bg-white shadow-[0_3px_14px_rgba(50,25,14,0.08)] transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_8px_22px_rgba(50,25,14,0.12)] xl:w-[300px]">
-      <div className="relative aspect-[4/3] w-full shrink-0 overflow-hidden">
-        <button
-          type="button"
-          aria-label={`${t('Double-tap or press Enter to view')} ${t(item.name)} ${t('image')}`}
-          onClick={(event) => {
-            if (event.detail >= 2 || event.detail === 0) setIsImageOpen(true)
-          }}
-          onDoubleClick={() => setIsImageOpen(true)}
-          onTouchEnd={handleTouchEnd}
-          className="block h-full w-full"
-        >
+    <article className="group min-w-0 overflow-hidden rounded-xl bg-white shadow-[0_3px_14px_rgba(50,25,14,0.08)] transition-shadow duration-300 hover:shadow-[0_8px_22px_rgba(50,25,14,0.12)] sm:rounded-2xl">
+      <button
+        type="button"
+        aria-label={`${t('View item details')} ${t(item.name)}`}
+        onClick={() => setIsImageOpen(true)}
+        className="block w-full text-left"
+      >
+        <div className="relative aspect-square w-full overflow-hidden">
           <img
             src={cardImage}
             alt={t(item.name)}
@@ -103,58 +88,67 @@ export default function MenuCard({ item }: { item: MenuItem }) {
             decoding="async"
             className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
           />
-        </button>
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#32190E]/40 via-transparent to-transparent" />
-        {item.badge && (
-          <span className="pointer-events-none absolute left-3 top-3 max-w-[calc(100%-1.5rem)] rounded-full bg-[#FFFFFF] px-3 py-1 text-xs font-semibold text-[#32190E] shadow-sm">
-            {item.badge.emoji} {t(item.badge.label)}
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#32190E]/40 via-transparent to-transparent" />
+          {item.badge && (
+            <span className="pointer-events-none absolute left-1.5 top-1.5 max-w-[calc(100%-0.75rem)] truncate whitespace-nowrap rounded-full bg-[#FFFFFF] px-1.5 py-0.5 text-[9px] font-semibold leading-tight text-[#32190E] shadow-sm sm:left-2 sm:top-2 sm:px-2 sm:text-[11px]">
+              {item.badge.emoji} {t(item.badge.label)}
+            </span>
+          )}
+          <span className="pointer-events-none absolute bottom-1.5 right-1.5 rounded-full bg-[#C91F26] px-2 py-1 text-[11px] font-bold leading-tight text-white shadow-[0_3px_10px_rgba(201,31,38,0.24)] sm:bottom-2 sm:right-2 sm:px-2.5 sm:text-xs">
+            {item.price} <span className="text-[0.7em] font-medium">{t('ETB')}</span>
           </span>
-        )}
-        <span className="pointer-events-none absolute bottom-3 right-3 rounded-full bg-[#C91F26] px-3.5 py-1.5 text-[15px] font-bold text-white shadow-[0_3px_10px_rgba(201,31,38,0.24)]">
-          {item.price} <span className="text-[0.7em] font-medium">{t('ETB')}</span>
-        </span>
-      </div>
-      <div className={`p-5 ${item.desc ? 'min-h-[11rem] flex-1' : ''}`}>
-        <h3
-          className={`font-display text-[1.35rem] font-semibold leading-snug text-[#32190E] sm:text-2xl ${
-            item.desc ? 'min-h-[3.5rem]' : ''
-          }`}
-        >
-          {t(item.name)}
-        </h3>
-        {item.desc && (
-          <div className="mt-3 min-h-20 border-t border-[#E5DDD2] pt-3">
-            <p className="text-xs font-bold uppercase tracking-[0.12em] text-[#C91F26]">
-              {t('Ingredients & details')}
-            </p>
-            <p className="mt-1 text-base leading-6 text-[#71594A]">{t(item.desc)}</p>
-          </div>
-        )}
-      </div>
+        </div>
+        <div className="min-w-0 p-1.5 sm:p-2.5">
+          <h3 className="font-display line-clamp-2 text-sm font-semibold leading-tight text-[#32190E] sm:text-base sm:leading-snug">
+            {t(item.name)}
+          </h3>
+        </div>
+      </button>
       {isImageOpen &&
         createPortal(
           <div
             role="dialog"
             aria-modal="true"
-            aria-label={`${t(item.name)} ${t('image')}`}
-            className="fixed inset-0 z-[100] flex touch-none items-center justify-center overscroll-none bg-black/90 p-4"
+            aria-label={`${t(item.name)} ${t('Ingredients & details')}`}
+            className="fixed inset-0 z-[100] flex touch-none items-center justify-center overscroll-none bg-black/75 p-4"
             onClick={(event) => {
               if (event.target === event.currentTarget) closeImage()
             }}
           >
-            <button
-              type="button"
-              onClick={closeImage}
-              aria-label={t('Close image')}
-              className="absolute right-4 top-4 z-10 flex h-12 w-12 items-center justify-center rounded-full bg-white/15 text-3xl leading-none text-white hover:bg-white/25"
-            >
-              ×
-            </button>
-            <img
-              src={item.image}
-              alt={t(item.name)}
-              className="max-h-full max-w-full object-contain"
-            />
+            <div className="relative max-h-[90dvh] w-full max-w-2xl overflow-y-auto rounded-3xl bg-white shadow-2xl">
+              <div className="relative aspect-[4/3] max-h-[55dvh] w-full overflow-hidden bg-[#F5F0E8]">
+                <img src={cardImage} alt={t(item.name)} className="h-full w-full object-cover" />
+                {item.badge && (
+                  <span className="absolute left-3 top-3 max-w-[calc(100%-5rem)] truncate rounded-full bg-white px-3 py-1.5 text-sm font-semibold text-[#32190E] shadow-sm">
+                    {item.badge.emoji} {t(item.badge.label)}
+                  </span>
+                )}
+                <span className="absolute bottom-3 right-3 rounded-full bg-[#C91F26] px-3.5 py-2 text-base font-bold text-white shadow-lg">
+                  {item.price} <span className="text-xs font-medium">{t('ETB')}</span>
+                </span>
+                <button
+                  type="button"
+                  onClick={closeImage}
+                  aria-label={t('Close details')}
+                  className="absolute right-3 top-3 flex h-10 w-10 items-center justify-center rounded-full bg-black/55 text-2xl leading-none text-white hover:bg-black/70"
+                >
+                  ×
+                </button>
+              </div>
+              <div className="p-5 text-left sm:p-7">
+                <h2 className="font-display text-2xl font-semibold text-[#32190E] sm:text-3xl">
+                  {t(item.name)}
+                </h2>
+                {item.desc && (
+                  <div className="mt-4 border-t border-[#E5DDD2] pt-4">
+                    <p className="text-xs font-bold uppercase tracking-[0.12em] text-[#C91F26]">
+                      {t('Ingredients & details')}
+                    </p>
+                    <p className="mt-2 text-base leading-7 text-[#71594A]">{t(item.desc)}</p>
+                  </div>
+                )}
+              </div>
+            </div>
           </div>,
           document.body,
         )}

@@ -1,4 +1,3 @@
-import { useRef } from 'react'
 import type { MenuSection as MenuSectionType } from '../data/menu'
 import MenuCard from './MenuCard'
 import PriceList from './PriceList'
@@ -11,11 +10,7 @@ export default function MenuSection({
   section: MenuSectionType
 }) {
   const { t } = useLanguage()
-  const rowRef = useRef<HTMLDivElement>(null)
   const revealRef = useReveal<HTMLElement>()
-  const scrollBy = (dir: 1 | -1) => {
-    rowRef.current?.scrollBy({ left: dir * 320, behavior: 'smooth' })
-  }
 
   return (
     <section
@@ -33,35 +28,12 @@ export default function MenuSection({
               <p className="mt-2 text-sm italic text-[#71594A]">({t(section.note)})</p>
             )}
           </div>
-          {section.layout === 'cards' && (
-            <div className="hidden gap-2 sm:flex">
-              <button
-                onClick={() => scrollBy(-1)}
-                aria-label={`${t('Scroll left')} ${t(section.title)}`}
-                className="flex h-11 w-11 items-center justify-center rounded-full border border-[#E5DDD2] bg-white text-[#32190E] transition-colors hover:border-[#C91F26] hover:bg-[#C91F26] hover:text-white"
-              >
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M15 18l-6-6 6-6" />
-                </svg>
-              </button>
-              <button
-                onClick={() => scrollBy(1)}
-                aria-label={`${t('Scroll right')} ${t(section.title)}`}
-                className="flex h-11 w-11 items-center justify-center rounded-full border border-[#E5DDD2] bg-white text-[#32190E] transition-colors hover:border-[#C91F26] hover:bg-[#C91F26] hover:text-white"
-              >
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M9 6l6 6-6 6" />
-                </svg>
-              </button>
-            </div>
-          )}
         </div>
       </div>
 
       {section.layout === 'cards' ? (
         <div
-          ref={rowRef}
-          className="hide-scrollbar row-fade-right mx-auto mt-8 flex w-full max-w-6xl snap-x snap-mandatory gap-4 overflow-x-auto overscroll-x-contain py-2 pl-4 pr-0 pb-4 scroll-pl-4 sm:gap-5 sm:pl-6 sm:scroll-pl-6"
+          className="mx-auto mt-5 grid w-full max-w-6xl grid-cols-2 gap-2 px-4 pb-4 sm:mt-8 sm:gap-4 sm:px-6 md:grid-cols-3 xl:grid-cols-4"
         >
           {section.items.map((item) => (
             <MenuCard key={item.name} item={item} />
